@@ -359,3 +359,74 @@
   }
 
 }
+/* =========================
+   DEMO ACCOUNT
+========================= */
+
+.demo-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.demo-divider::before,
+.demo-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+.demo-button {
+    width: 100%;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    border: 1px solid #2563eb;
+    border-radius: 8px;
+
+    background: white;
+    color: #2563eb;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.demo-button:hover {
+    background: #eff6ff;
+    transform: translateY(-1px);
+}
+
+.demo-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.demo-button svg {
+    font-size: 16px;
+}
+
+.demo-info {
+    margin: 10px 0 0;
+
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}

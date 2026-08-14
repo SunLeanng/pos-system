@@ -16,8 +16,9 @@ import {
 } from "../firebase/firebaseConfig";
 
 
-
-// Register User
+// =========================
+// REGISTER USER
+// =========================
 
 export const registerUser = async (
     email,
@@ -26,129 +27,111 @@ export const registerUser = async (
     role
 ) => {
 
-
     const result = await createUserWithEmailAndPassword(
-
         auth,
-
         email,
-
         password
-
     );
-
 
     const uid = result.user.uid;
 
-
-
     await setDoc(
-
-        doc(
-            db,
-            "users",
-            uid
-        ),
-
+        doc(db, "users", uid),
         {
-
             name: name,
-
             email: email,
-
             role: role
-
         }
-
     );
 
-
-
     return {
-
         uid: uid,
-
         name: name,
-
         email: email,
-
         role: role
-
     };
-
-
 };
 
 
-
-
-// Login User
+// =========================
+// LOGIN USER
+// =========================
 
 export const loginUser = async (
     email,
     password
 ) => {
 
-
     const result = await signInWithEmailAndPassword(
-
         auth,
-
         email,
-
         password
-
     );
-
 
     const uid = result.user.uid;
 
-
-
     const userDoc = await getDoc(
-
-        doc(
-            db,
-            "users",
-            uid
-        )
-
+        doc(db, "users", uid)
     );
 
-
-
-    if(userDoc.exists()){
-
+    if (userDoc.exists()) {
 
         return {
-
             uid: uid,
-
             ...userDoc.data()
-
         };
 
-
     }
-
-
 
     throw new Error(
         "User role not found"
     );
-
-
 };
 
 
+// =========================
+// DEMO ADMIN LOGIN
+// =========================
+
+export const loginDemoAccount = async () => {
+
+    // Demo account credentials
+    const demoEmail = "demo.admin@possystem.com";
+    const demoPassword = "Demo12345!";
+
+    const result = await signInWithEmailAndPassword(
+        auth,
+        demoEmail,
+        demoPassword
+    );
+
+    const uid = result.user.uid;
+
+    const userDoc = await getDoc(
+        doc(db, "users", uid)
+    );
+
+    if (userDoc.exists()) {
+
+        return {
+            uid: uid,
+            ...userDoc.data()
+        };
+
+    }
+
+    throw new Error(
+        "Demo account role not found"
+    );
+};
 
 
-// Logout
+// =========================
+// LOGOUT
+// =========================
 
-export const logoutUser = async()=>{
-
+export const logoutUser = async () => {
 
     await signOut(auth);
-
 
 };
