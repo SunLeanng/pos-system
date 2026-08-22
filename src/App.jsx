@@ -5,7 +5,9 @@ import {
   useLocation,
 } from "react-router-dom";
 
+import { useState } from "react";
 import { Toaster } from "react-hot-toast";
+import { FaBars } from "react-icons/fa";
 
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
@@ -88,22 +90,86 @@ function Layout({ children }) {
 
   const location = useLocation();
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const pageTitle = getPageTitle(
     location.pathname
   );
+
 
   return (
 
     <div className="app-layout">
 
-      {/* Sidebar */}
-      <Sidebar />
+      {/* ==================================
+          MOBILE SIDEBAR OVERLAY
+      ================================== */}
+
+      {sidebarOpen && (
+
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+
+      )}
 
 
-      {/* Right Side */}
+      {/* ==================================
+          SIDEBAR
+      ================================== */}
+
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
+
+
+      {/* ==================================
+          RIGHT CONTENT
+      ================================== */}
+
       <div className="content-area">
 
-        <Navbar title={pageTitle} />
+
+        {/* ==================================
+            MOBILE HEADER
+        ================================== */}
+
+        <div className="mobile-topbar">
+
+          <button
+            className="mobile-menu-btn"
+            onClick={() =>
+              setSidebarOpen(true)
+            }
+            aria-label="Open menu"
+          >
+
+            <FaBars />
+
+          </button>
+
+
+          <strong>
+            {pageTitle}
+          </strong>
+
+        </div>
+
+
+        {/* ==================================
+            DESKTOP NAVBAR
+        ================================== */}
+
+        <Navbar
+          title={pageTitle}
+        />
+
+
+        {/* ==================================
+            PAGE CONTENT
+        ================================== */}
 
         <main className="main-content">
 
@@ -129,7 +195,9 @@ function App() {
 
     <BrowserRouter>
 
-      {/* Toast Notifications */}
+      {/* ==================================
+          TOAST
+      ================================== */}
 
       <Toaster
         position="top-right"
@@ -145,6 +213,7 @@ function App() {
 
 
       <Routes>
+
 
         {/* ==================================
             AUTHENTICATION
@@ -173,11 +242,17 @@ function App() {
         <Route
           path="/dashboard"
           element={
+
             <ProtectedRoute role="admin">
+
               <Layout>
+
                 <Dashboard />
+
               </Layout>
+
             </ProtectedRoute>
+
           }
         />
 
@@ -189,33 +264,53 @@ function App() {
         <Route
           path="/products"
           element={
+
             <ProtectedRoute role="admin">
+
               <Layout>
+
                 <ProductList />
+
               </Layout>
+
             </ProtectedRoute>
+
           }
         />
+
 
         <Route
           path="/add-product"
           element={
+
             <ProtectedRoute role="admin">
+
               <Layout>
+
                 <AddProduct />
+
               </Layout>
+
             </ProtectedRoute>
+
           }
         />
+
 
         <Route
           path="/edit-product/:id"
           element={
+
             <ProtectedRoute role="admin">
+
               <Layout>
+
                 <EditProduct />
+
               </Layout>
+
             </ProtectedRoute>
+
           }
         />
 
@@ -227,33 +322,53 @@ function App() {
         <Route
           path="/categories"
           element={
+
             <ProtectedRoute role="admin">
+
               <Layout>
+
                 <CategoryList />
+
               </Layout>
+
             </ProtectedRoute>
+
           }
         />
+
 
         <Route
           path="/add-category"
           element={
+
             <ProtectedRoute role="admin">
+
               <Layout>
+
                 <AddCategory />
+
               </Layout>
+
             </ProtectedRoute>
+
           }
         />
+
 
         <Route
           path="/edit-category/:id"
           element={
+
             <ProtectedRoute role="admin">
+
               <Layout>
+
                 <EditCategory />
+
               </Layout>
+
             </ProtectedRoute>
+
           }
         />
 
@@ -265,11 +380,17 @@ function App() {
         <Route
           path="/sales"
           element={
+
             <ProtectedRoute>
+
               <Layout>
+
                 <POS />
+
               </Layout>
+
             </ProtectedRoute>
+
           }
         />
 
@@ -281,11 +402,17 @@ function App() {
         <Route
           path="/sales-history"
           element={
+
             <ProtectedRoute>
+
               <Layout>
+
                 <SalesHistory />
+
               </Layout>
+
             </ProtectedRoute>
+
           }
         />
 
@@ -297,11 +424,17 @@ function App() {
         <Route
           path="/users"
           element={
+
             <ProtectedRoute role="admin">
+
               <Layout>
+
                 <UserList />
+
               </Layout>
+
             </ProtectedRoute>
+
           }
         />
 
@@ -311,5 +444,6 @@ function App() {
 
   );
 }
+
 
 export default App;
